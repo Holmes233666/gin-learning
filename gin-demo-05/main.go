@@ -4,7 +4,26 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
+
+func InitMiddleWare(c *gin.Context) {
+	fmt.Println("中间件1")
+	c.Next()
+	fmt.Println("中间件1结束")
+}
+
+func InitMiddleWare2(c *gin.Context) {
+	fmt.Println("中间件2")
+	c.Next()
+	fmt.Println("中间件2结束")
+}
+
+func InitMiddleWare3(c *gin.Context) {
+	fmt.Println("中间件3")
+	c.Next()
+	fmt.Println("中间件3结束")
+}
 
 func main() {
 	r := gin.Default()
@@ -13,9 +32,11 @@ func main() {
 	})
 
 	r.GET("/admin",
-		func(c *gin.Context) { fmt.Printf("aaa") },
-		func(c *gin.Context) { c.String(http.StatusOK, "admin") },
-	)
-	
+		InitMiddleWare, InitMiddleWare2, InitMiddleWare3,
+		func(c *gin.Context) {
+			time.Sleep(1 * time.Second)
+			c.String(http.StatusOK, "admin")
+		})
+
 	r.Run(":8080")
 }
