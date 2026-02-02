@@ -1,18 +1,15 @@
 package routers
 
 import (
+	"GinStudy/gin-demo-04/controller/api"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func ApiRoutersInit(router *gin.Engine) {
 	apiRouter := router.Group("api")
 	{
-		apiRouter.GET("/", func(c *gin.Context) {
-			c.String(http.StatusOK, "api接口")
-		})
-		apiRouter.GET("/news", func(c *gin.Context) {
-			c.String(http.StatusOK, "新闻接口")
-		})
+		a := &api.Api{}
+		apiRouter.GET("/", a.Index)
+		apiRouter.GET("/news", a.ApiNews)
 	}
 }
